@@ -21,7 +21,7 @@ class Shop:
     def search_products(self):
         ans = ' '
         while ans != 'н':
-            search = input("Введите наименование продукта")
+            search = input("Введите наименование продукта для поиска ")
             if search in self.products.keys():
                 print(f'Продукт {search}: кол-во: {self.products[search]}')
             else:
@@ -29,15 +29,29 @@ class Shop:
             ans = input("Желаете продолжить? д/н ")
 
     def remove_products(self):
-        pass
+        ans = ' '
+        while ans != 'н':
+            search = input("Введите наименование продукта для удаления ")
+            if search in self.products.keys():
+                del self.products[search]
+                print(f'Продукт {search}удален')
+            if self.products:
+                ans = input("Желаете продолжить? д/н ")
+            else:
+                print(f'В магазине больше нет продуктов')
+                break
 
     def get_state(self):
-        print(self.products)
+        if self.products:
+            print(f'В наличии в магащине {self.products}')
+        else:
+            print(f'В магазине нет продуктов')
 
 
 obj = Shop()
 obj.add_products()
 obj.search_products()
+obj.remove_products()
 obj.get_state()
 
 
