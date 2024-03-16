@@ -22,6 +22,24 @@ class Transit:
         self.pricing = pricing
         self.cities_and_citizens = cities_and_citizens
 
+    def menu(self):
+        answer = None
+        while answer != 4:
+            print('\nВыберите действие:\n'
+                  '1 - Посмотреть Доступные города для доставки грузов\n'
+                  '2 - Посмотреть расценки\n'
+                  '3 - Сделать заказ на транспортировку груза\n'
+                  '4 - Выход\n')
+            action = int(input())
+            if action == 1:
+                self.get_cities()
+            elif action == 2:
+                self.get_price()
+            elif action == 3:
+                self.get_order()
+            elif action == 4:
+                break
+
     def get_cities(self):
         if self.cities_and_citizens:
             print(f'##################################################################################################')
@@ -42,39 +60,46 @@ class Transit:
                 print(f'{transport} - {price}')
 
     def get_bill_by_car(self, city_one, citi_two):
-        pass
+        distance = float(input(f"Введите расстояние от {city_one} до {citi_two} в км\n"))
+        weight = float(input(f"Введите вес груза в кг\n"))
+        return (f'Итоговая цена для доставки между {city_one} до {citi_two}:\n'
+                f'{distance * self.pricing['Автомобиль'] * weight} руб')
 
     def get_bill_by_train(self, city_one, citi_two):
-        pass
+        distance = float(input(f"Введите расстояние от {city_one} до {citi_two} в км\n"))
+        weight = float(input(f"Введите вес груза в кг\n"))
+        return (f'Итоговая цена для доставки между {city_one} до {citi_two}:\n'
+                f'{distance * self.pricing['Поезд'] * weight} руб')
 
     def get_bill_by_plain(self, city_one, citi_two):
-        pass
+        distance = float(input(f"Введите расстояние от {city_one} до {citi_two} в км\n"))
+        weight = float(input(f"Введите вес груза в кг\n"))
+        return (f'Итоговая цена для доставки между {city_one} до {citi_two}:\n'
+                f'{distance * self.pricing['Самолет'] * weight} руб')
 
     def get_order(self):
         self.get_cities()
-        route = []
-        city1 = input("Введите город отправления")
-        city2 = input("Введите город назначения")
-        if city1 or city2 not in self.cities_and_citizens.keys():
+        city1 = input("Введите город отправления ")
+        city2 = input("Введите город назначения ")
+        if city1 not in self.cities_and_citizens.keys() or city2 not in self.cities_and_citizens.keys():
             print(f'Маршрут невозможен, 1 из введенных вами город отсутствует в списке доступных')
-        elif self.cities_and_citizens[city1] or self.cities_and_citizens[city2] < 100000:
+        elif 0 < self.cities_and_citizens[city1] <= 150000 or 0 < self.cities_and_citizens[city2] <= 150000:
             print(f'Доставка по маршруту из города {city1} в город {city2} доступна только автомобилем\n'
                   f'т.к. население в одном из городов меньше 100 тыс.')
             print(self.get_bill_by_car(city1, city2))
 
-        elif self.cities_and_citizens[city1] and self.cities_and_citizens[city2] > 300000:
+        elif 300000 < self.cities_and_citizens[city1] < 999999 or 300000 < self.cities_and_citizens[city2] < 999999:
             print(f'Доставка по маршруту из города {city1} в город {city2} доступна автомобилем или поездом\n'
                   f'т.к. население в одном из городов меньше 100 тыс.')
-            choose_transport = int(input("Выберите транспорт 1- автомобиль, 2 - поезд"))
+            choose_transport = int(input("Выберите транспорт 1- автомобиль, 2 - поезд "))
             if choose_transport == 1:
                 print(self.get_bill_by_car(city1, city2))
             else:
                 print(self.get_bill_by_train(city1, city2))
 
         elif self.cities_and_citizens[city1] and self.cities_and_citizens[city2] > 1000000:
-            print(f'Доставка по маршруту из города {city1} в город {city2} доступна любым видом транспорта\n'
-                  f'т.к. население в одном из городов меньше 100 тыс.')
-            choose_transport = int(input("Выберите транспорт 1- автомобиль, 2 - поезд, 3 - самолет"))
+            print(f'Доставка по маршруту из города {city1} в город {city2} доступна любым видом транспорта')
+            choose_transport = int(input("Выберите транспорт 1- автомобиль, 2 - поезд, 3 - самолет "))
             if choose_transport == 1:
                 print(self.get_bill_by_car(city1, city2))
             elif choose_transport == 2:
@@ -83,32 +108,12 @@ class Transit:
                 print(self.get_bill_by_plain(city1, city2))
 
 
-
-
-    def menu(self):
-        answer = None
-        while answer != 5:
-            print('\nВыберите действие:\n'
-                  '1 - Посмотреть Доступные города для доставки грузов\n'
-                  '2 - Посмотреть расценки\n'
-                  '3 - Сделать заказ на транспортировку груза\n'
-                  '4 - Получить чек\n'
-                  '5 - Выход\n')
-            action = int(input())
-            if action == 1:
-                self.get_cities()
-            elif action == 2:
-                self.get_price()
-            elif action == 3:
-                self.get_order()
-
-
 cities = {'Минск': 2000000, 'Москва': 10000000, 'Пинск': 150000, 'Брест': 342000, 'Ивацевичи': 30000}
-cost = {'Автомобиль': 15, 'Самолет': 1500, 'Поезд': 25}
+cost = {'Автомобиль': 0.15, 'Самолет': 1, 'Поезд': 0.25}
 speed = {'Автомобиль': 15, 'Самолет': 1500, 'Поезд': 25}
 
 
 obj = Transit(speed, cost, cities)
 obj.menu()
-# obj.get_price()
+
 
