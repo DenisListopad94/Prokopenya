@@ -1,7 +1,4 @@
 """
-4)	Дана строка, выведите все вхождения слов, начинающиеся на гласную букву.
-5)	Дана строка. Вывести все числа этой строки, как отрицательные так и положительные.
-6)	В каждой строке замените все вхождения подстроки "human" на подстроку "computer" и выведите полученные строки.
 7)	Извлечь дату из строки. Формат даты dd –mm-yyyy (например, 2022-02-28).
 8)	Найти все слова, в которых есть хотя бы одна буква ‘b’
 """
@@ -25,3 +22,18 @@ pattern = r'^(8\d{9}$)|(9\d{9}$)'
 for phone_number in numbers:
     for value in re.finditer(pattern, phone_number):
         print(value)
+
+# 4) Дана строка, выведите все вхождения слов, начинающиеся на гласную букву.
+# a e i o u y
+new_test_string = "abc cow cat dog above orange ice"
+pattern = r'\b[aoeiuy]\w+'
+for value in re.finditer(pattern, new_test_string):
+    print(value)
+
+# 5) Дана строка. Вывести все числа этой строки, как отрицательные так и положительные.
+new_test_string = "abc cow 52 -99 65461 3 -6 ice"
+pattern = r'[-+]?\d+'
+for value in re.finditer(pattern, new_test_string):
+    print(value)
+
+# 6) В каждой строке замените все вхождения подстроки "human" на подстроку "computer" и выведите полученные строки.
