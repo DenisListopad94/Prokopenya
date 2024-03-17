@@ -1,6 +1,5 @@
 """
-7)	Извлечь дату из строки. Формат даты dd –mm-yyyy (например, 2022-02-28).
-8)	Найти все слова, в которых есть хотя бы одна буква ‘b’
+Задание сделано по пунктам
 """
 import re
 
@@ -37,3 +36,25 @@ for value in re.finditer(pattern, new_test_string):
     print(value)
 
 # 6) В каждой строке замените все вхождения подстроки "human" на подстроку "computer" и выведите полученные строки.
+
+text = ['human', 'some text and human', '65465 human numbers', 'human man']
+pattern = r'human'
+new_string = 'computer'
+for el in text:
+    match = re.sub(pattern, new_string, el)
+    print(match)
+
+# 7) Извлечь дату из строки. Формат даты dd –mm-yyyy (например, 2022-02-28).
+
+test_str = '2022-02-28 some text 2022-02-29 some text text 2022-01-28'
+pattern = r'\d{4}-\d{2}-\d{2}'
+for value in re.finditer(pattern, test_str):
+    print(value)
+
+# 8) Найти все слова, в которых есть хотя бы одна буква ‘b’
+test_str = 'bee some b somebody text abroad bear'
+pattern = r'b\w+|(\w+b\w+) '
+for value in re.finditer(pattern, test_str):
+    print(value)
+
+
