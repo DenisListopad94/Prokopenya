@@ -1,0 +1,60 @@
+1.	Создать таблицу с заданными ограничениями и полями. Заполнить данные 15 актёров.
+syntax
+INSERT INTO actors (name, surname, age, movie_name, budget, manager, release_year, sex)
+VALUES ('Стивен', 'Лэнг', 71, 'Аватар', 237000000, 'Джеймс Кэмерон', 2009, 'male');
+
+2.	Создать колонку fee REAL, заполнить значение гонораров за фильмы.
+ALTER TABLE actors
+ADD COLUMN fee REAL NULL;
+
+3.	Переименовать колонку fee в fee_actors. Добавить колонку city, где проживают актёры в данный момент и внести все изменения в таблицу.
+ALTER table actors
+rename COLUMN fee to fee_actors;
+
+ALTER TABLE actors
+ADD COLUMN city TEXT NULL;
+
+4.	Вывести всех актёров которые снимались в период с 1990 по 2000 год. Актёры должны быть выведены только 1 раз.
+SELECT name, surname from actors
+where release_year BETWEEN 1990 and 2000;
+
+5.	Вывести все фильмы в которых приняли участие 2 и более актёра из нашей базы данных. Вывод организовать в порядке возрастания фамилий!
+SELECT surname, movie_name
+FROM actors
+GROUP BY movie_name
+HAVING COUNT(name) >= 2
+ORDER BY surname;
+
+6.	Вывести количество актёров мужского пола, которые есть в таблице которые старше 55 лет.
+SELECT DISTINCT name, surname from actors
+where sex='male' and age > 55;
+
+7.	Вывести всех актёров которые приняли участие в 2-х и более фильмах, которые есть а бд и которые имеют на своём счету 10000000$.
+SELECT surname, movie_name
+FROM actors
+GROUP BY movie_name
+HAVING COUNT(name) >= 2 and fee_actors > 1000000
+ORDER BY surname;
+
+8.	Вывести общую сумму всех гонораров актёров в фильмах снятых в период с 1995 по 2005 год.
+select sum(fee_actors) from actors
+where release_year BETWEEN 1995 and 2005;
+
+9.	Вывести фильмы и имена и фамилии актёров, которым на момент выпуска фильма в прокат было меньше 35 лет.
+SELECT movie_name, name, surname
+from actors
+where age - (2024 - release_year) < 35;
+
+Дополнительные задания
+
+10.	Вывести все фильмы название которых состоит из 2 слов. Использовать регулярные выражения.
+SELECT movie_name from actors
+where movie_name REGEXP '\w*\s\w+\b';
+
+12.	Вывести  фильм в котором приняло участие большее число актёров из вашей бд.
+SELECT movie_name
+FROM actors
+GROUP BY movie_name
+HAVING COUNT(name)
+ORDER BY count(name) DESC
+limit 1;
