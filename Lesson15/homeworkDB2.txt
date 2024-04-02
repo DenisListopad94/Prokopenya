@@ -1,0 +1,73 @@
+Задачи на выборку из нескольких таблиц и не только
+1.	Создать таблицы с данными согласно спроектированной схеме. Заполнить предоставленными данными.
+
+2.	Добавить новое поле finance INTEGER в таблицу bank_accounts значение задать NULL.
+ALTER TABLE bank_accounts
+ADD COLUMN finance INTEGER NULL;
+
+3.	Вывести первых 10 режиссёров, которые сняли высокобюджетные фильмы. Режиссёры не должны повторяться.
+SELECT DISTINCT directors.name as name, directors.surname as surname
+FROM directors
+JOIN movies on directors.director_id = movies.director_id
+WHERE movies.budjet > 50000000
+ORDER by movies.budjet DESC
+LIMIT 10
+
+4.	Вывести актёров и режиссёров, которые не участвовали не в одном из фильмов.
+Вариант 1
+SELECT actors.name, actors.surname
+FROM actors
+LEFT join actors_movies on actors.actors_id = actors_movies.actors_id
+WHERE actors_movies.actors_id IS NULL
+
+SELECT directors.name, directors.surname,
+FROM directors
+LEFT join movies on directors.director_id = movies.director_id
+WHERE movies.director_id IS NULL
+
+Вариант 2
+SELECT  DISTINCT directors.name, directors.surname, actors.name, actors.surname
+FROM directors,actors
+LEFT join movies on directors.director_id = movies.director_id
+LEFT join actors_movies on actors.actors_id = actors_movies.actors_id
+WHERE movies.director_id IS NULL AND  actors_movies.actors_id IS NULL
+
+5.	Вывести все фильмы, а также всех актёров кассовые сборы которых превысили 150000000.
+SELECT movies.name_movie, movies.budjet, actors.name, actors.surname
+FROM movies
+INNER JOIN actors_movies ON movies.movie_id = actors_movies.movies_id
+INNER JOIN actors ON actors.actors_id = actors_movies.actors_id
+WHERE movies.budjet > 150000000;
+
+6.	Вывести всех режиссёров которые снимали фильмы до 2000 года. Режиссёры не должны повторятся
+SELECT directors.name, directors.surname
+from directors
+LEFT JOIN movies on directors.director_id = movies.director_id
+WHERE movies.release < 2000
+
+7.	Добавить фильмы для актёров и режиссёров, у которых нет зависимости в таблице movies. Не забыть сделать изменения в таблице actors_movies.
+INSERT INTO directors (name, surname, age, sex)
+VALUES ('Tom', 'Hanks',	68, 'm');
+
+UPDATE movies
+SET director_id = 19
+WHERE movies.name_movie = 'Larry Crowne'
+
+
+ЕСТЬ НЕДОПОНИМАНИЕ ЗАДАЧИ
+
+
+8.	Добавить колонку rating к фильмам. Задать значения рейтинга фильмов.
+ALTER TABLE movies
+ADD COLUMN rating INTEGER NULL;
+
+9.	Вывести режиссёров и фильмы с рейтингом ниже среднего до 2000 года
+SELECT directors.name, directors.surname, movies.name_movie, movies.rating
+from directors
+LEFT JOIN movies on movies.director_id = directors.director_id
+GROUP BY directors.name, directors.surname
+HAVING AVG(movies.rating) < (SELECT AVG(rating) FROM movies);
+
+10.	Вывести всех актёров, которые знакомы с 2-мя и более другими актёрами.
+
+НЕ ВЫПОЛНЕНО
