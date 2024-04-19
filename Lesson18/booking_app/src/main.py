@@ -17,12 +17,12 @@ def get_item(item_id: int):
     return {"item_id": item_id}
 
 
-@app.get("/items/{item_id}/{name}")
-def get_item_different_types(item_id: int, name: str,) -> dict:
+@app.get("/item")
+def get_query_types(item_id: int, name: str,) -> dict:
     return {"item_id": item_id, "name": name}
 
 
-@app.get("/items")
-def get_query_types(id_: int, name: str,) -> dict:
-    return {"item_id": id_, "name": name}
+@app.get("/{name}")
+def get_types(name: str, id_: int, age: int) -> dict:
+    return {"name": name, "item_id": id_, "age": age}
 
